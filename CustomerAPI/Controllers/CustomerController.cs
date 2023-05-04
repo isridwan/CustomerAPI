@@ -1,4 +1,5 @@
 ﻿using CustomerAPI.Models;
+using CustomerAPI.Services.CustomerService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,88 +9,55 @@ namespace CustomerAPI.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        public static List<Customer> listCustomer = new List<Customer>
+        
+        private readonly ICustomerService _customerService;
+        public CustomerController(ICustomerService customerService) 
         {
-            new Customer
-            {
-                customerId =1,
-                customerName = "Alexander",
-                customerAddress = "Jakarta",
-                customerPhoneNumber = "1234567890"
-            },
-            new Customer
-            {
-                customerId =2,
-                customerName = "Rudy",
-                customerAddress = "Tangerang",
-                customerPhoneNumber = "1234567892"
-            },
-            new Customer
-            {
-                customerId =3,
-                customerName = "Said",
-                customerAddress = "Bekasi",
-                customerPhoneNumber = "0999999999"
-            },
-            new Customer
-            {
-
-                customerId =4,
-                customerName = "Lee Ping",
-                customerAddress = "Butong Brunie",
-                customerPhoneNumber = "0888888"
-            }
-
-
-        };
+            _customerService = customerService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<List<Customer>>> getAllCustomer()
         {
-            return Ok(listCustomer);
+            return await _customerService.getAllCustomer();
         }
 
         [HttpGet("{customerId}")]
-        public async Task<ActionResult<List<Customer>>> getCustomerById(int customerId)
+        public async Task<ActionResult<Customer>> getCustomerById(int customerId)
         {
-            var customer = listCustomer.Find(x => x.customerId == customerId);
+            var customer = await _customerService.getCustomerById(customerId);
             if (customer is null)
                 return NotFound("Sorry the customer doesn't exist");
             return Ok(customer);
         }
-
+        
         [HttpPost]
         public async Task<ActionResult<List<Customer>>> addCustomer(Customer addCustomer)
         {
-            listCustomer.Add(addCustomer);
-            return Ok(listCustomer);
-
+            var customer = await _customerService.addCustomer(addCustomer);
+            return Ok(customer);
         }
-
+        
         [HttpPut("{customerId}")]
         public async Task<ActionResult<List<Customer>>> updateCustomerById(int customerId, Customer requestUpdate)
         {
-            var customer = listCustomer.Find(x => x.customerId == customerId);
+            var customer = await _customerService.updateCustomerById(customerId, requestUpdate);    
             if (customer is null)
                 return NotFound("Sorry the customer doesn't exist");
-            customer.customerName = requestUpdate.customerName;
-            customer.customerAddress = requestUpdate.customerAddress;
-            customer.customerPhoneNumber = requestUpdate.customerPhoneNumber;
-            return Ok(listCustomer);
+            return Ok(customer);
 
         }
-
+        
         [HttpDelete("{customerId}")]
         public async Task<ActionResult<List<Customer>>> deleteCustomerById(int customerId)
         {
-            var customer = listCustomer.Find(x => x.customerId == customerId);
+            var customer = await _customerService.deleteCustomerById(customerId);
             if (customer is null)
                 return NotFound("Sorry the customer doesn't exist");
-
-            listCustomer.Remove(customer);
-            return Ok(listCustomer);
+            return Ok(customer);
 
         }
+        
 
     }
 }
