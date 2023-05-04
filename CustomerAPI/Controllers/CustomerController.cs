@@ -23,7 +23,22 @@ namespace CustomerAPI.Controllers
                 customerName = "Rudy",
                 customerAddress = "Tangerang",
                 customerPhoneNumber = "1234567892"
+            },
+            new Customer
+            {
+                customerId =3,
+                customerName = "Said",
+                customerAddress = "Bekasi",
+                customerPhoneNumber = "0999999999"
+            },
+            new Customer
+            {
+                customerId =4,
+                customerName = "Lee Ping",
+                customerAddress = "Butong Brunie",
+                customerPhoneNumber = "0888888"
             }
+
 
         };
 
