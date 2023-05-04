@@ -33,7 +33,11 @@ namespace CustomerAPI.Controllers
             },
             new Customer
             {
+<<<<<<< HEAD
                 customerId =4,
+=======
+                customerId =3,
+>>>>>>> 899780cc6db5a5a9d17d6c124178573fe5caa234
                 customerName = "Lee Ping",
                 customerAddress = "Butong Brunie",
                 customerPhoneNumber = "0888888"
